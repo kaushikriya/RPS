@@ -33,17 +33,14 @@ export const ContractProvider = ({ children }) => {
   };
 
   const startGame=async(player, move, salt, stake)=>{
-    // const gameContract =new ethers.Contract('0xfa26a8221dd409d2d3736bc5f2ea519f607b9880', RPSAbi.abi, signer);
     if(!RPSContract){
-      const gameContract = await RPSFactory(player, move, salt, stake, signer).createContract() 
-      setRPSContract(gameContract);
+      const contract =new ethers.Contract('0x9b23C3381daB31Ca82B3a517051e6ED6d2B8717d', RPSAbi.abi, signer);
+      // const contract = await RPSFactory(player, move, salt, stake, signer).createContract() 
+      // await contract.waitForDeployment()
+      setRPSContract(contract)
+      console.log(contract.target)
     }
   }
-
-  console.log(RPSContract)
-
-  console.log(currentAccount)
-
 
   useEffect(() => {
     checkIfWalletIsConnected();
@@ -92,7 +89,8 @@ export const ContractProvider = ({ children }) => {
         connectWallet,  
         currentAccount,
         startGame,
-        RPSContract
+        RPSContract,
+        signer
       }}
     >
       {children}

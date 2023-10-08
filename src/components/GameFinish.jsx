@@ -1,43 +1,32 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { ContractContext } from "../contexts/ContractContext";
+import Timer from "./Timer";
 
-export const GameFinish =()=>{
-
-    const {RPSContract} = useContext(ContractContext);
-    const [secondPlayerMove, setSecondPlayerMove] = useState()
+export const GameFinish =({secondPlayer, solve, timeRemaining, firstPlayerTimeout, stake})=>{
     const [salt, setSalt] = useState()
     const [move, setMove] = useState()
     const [gameFinished, setGameFinished] = useState(false)
 
-    useEffect(()=>{
-        const getContractInfo = async() =>{
-            const move = await RPSContract.c2();
-            setSecondPlayerMove(move)
-         }
-         
-        getContractInfo()
-    },[RPSContract])
+    const {currentAccount} = useContext(ContractContext)
 
-    const handleSolve=async()=>{
-        try{
-            await RPSContract.solve(move, salt)
-            setGameFinished(true);
-        }
-        catch(e){
-            console.error(e)
-        }
+    if(currentAccount.toUpperCase() === secondPlayer.toUpperCase()){
+        return <Timer targetTime={timeRemaining} timeout={firstPlayerTimeout} stake={stake}/>
     }
 
-    // if(secondPlayerMove !== 0){
-    //    return(<div>Check for timeout</div>)
-    // }
+    const handleSolve = async()=>{
+        try{
+          await solve(move, salt)
+          setGameFinished(true)
+        }catch(e){
+            console.log(e)
+        }
+    }
 
     return (<div>
         { gameFinished? <div>Game has Finished!</div> : <> <input title= 'salt' placeholder="salt" onChange={e => setSalt(e.target.value)}/>
         <input title= 'move' placeholder="move" onChange={e => setMove(e.target.value)}/>
         <button onClick={handleSolve}>Solve</button>
         </>}
-       
     </div>)
 }
 
