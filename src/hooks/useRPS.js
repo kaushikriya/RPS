@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import { ContractContext } from '../contexts/ContractContext';
 
 export const useRPS = () => {
-  const {RPSContract, signer, setLoading} = useContext(ContractContext)
+  const {RPSContract, signer, setLoading, setError} = useContext(ContractContext)
 
   const [gameState, setGameState] = useState({
     stake: undefined,
@@ -32,9 +32,10 @@ export const useRPS = () => {
         lastAction
       });
     } catch (error) {
+      setError(error)
       console.error('Error fetching contract info:', error);
     }
-  },[RPSContract, signer]);
+  },[RPSContract, setError, signer]);
 
   useEffect(() => {
     if (RPSContract) {
@@ -55,6 +56,7 @@ export const useRPS = () => {
       await RPSContract.connect(signer).play(move, {value});
       setLoading(false)
     } catch (error) {
+      setError(error)
       console.error('Error calling play function:', error);
     }
   };
@@ -66,9 +68,10 @@ export const useRPS = () => {
       await RPSContract.connect(signer).solve(move, salt);
       setLoading(false)
     } catch (error) {
-      console.error('Error calling solve function:', error);
+      setError(error)
+      console.error('Error calling solve function:', error); 
     }
-  };
+  }; 
 
   const firstPlayerTimeout = async () => {
     if(!RPSContract) return;
@@ -77,6 +80,7 @@ export const useRPS = () => {
       await RPSContract.connect(signer).j1Timeout();
       setLoading(false)
     } catch (error) {
+      setError(error)
       console.error('Error calling firstPlayerTimeout function:', error);
     }
   };
@@ -88,6 +92,7 @@ export const useRPS = () => {
       await RPSContract.connect(signer).j2Timeout();
       setLoading(false)
     } catch (error) {
+      setError(error)
       console.error('Error calling secondPlayerTimeout function:', error);
     }
   };
