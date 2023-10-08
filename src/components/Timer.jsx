@@ -26,7 +26,7 @@ const countdown = (targetTimestamp) => {
   return countdownString;
 };
 
-export const Timer = ({ targetTime, timeout, stake }) => {
+export const Timer = ({ targetTime, timeout, stake, text }) => {
   const [time, setTime] = useState(countdown(targetTime));
 
   useEffect(() => {
@@ -40,7 +40,7 @@ export const Timer = ({ targetTime, timeout, stake }) => {
   }, [targetTime]);
 
   if (time === "") {
-    return <button onClick={timeout}>Settle the game</button>;
+    return <button onClick={timeout}>Withdraw assets</button>;
   }
 
   if (stake === 0) {
@@ -49,7 +49,7 @@ export const Timer = ({ targetTime, timeout, stake }) => {
     );
   }
 
-  return <div>{`starts in ${time}`}</div>;
+  return <div>{`${text} ${time}`}</div>;
 };
 
 export default Timer;

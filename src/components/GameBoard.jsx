@@ -5,6 +5,7 @@ import Timer from "../components/Timer";
 export const GameBoard = ({
   stake,
   secondPlayer,
+  firstPlayer,
   timeRemaining,
   play,
   secondPlayerTimeout,
@@ -38,13 +39,21 @@ export const GameBoard = ({
     );
   }
 
-  return (
-    <Timer
-      targetTime={timeRemaining}
-      timeout={secondPlayerTimeout}
-      stake={stake}
-    />
-  );
+  if (
+    firstPlayer !== null &&
+    currentAccount.toUpperCase() === firstPlayer.toUpperCase()
+  ) {
+    return (
+      <Timer
+        targetTime={timeRemaining}
+        timeout={secondPlayerTimeout}
+        stake={stake}
+        text="Waiting for second player to make a move, you can withdraw the assets in "
+      />
+    );
+  }
+
+  return <div>You are not a participant of this game</div>;
 };
 
 export default GameBoard;

@@ -21,6 +21,7 @@ export const GameFinish = ({
         targetTime={timeRemaining}
         timeout={firstPlayerTimeout}
         stake={stake}
+        text="Waiting for first player to solve the game, you can withdraw your assets in"
       />
     );
   }

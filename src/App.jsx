@@ -15,20 +15,26 @@ function App() {
     secondPlayerTimeout,
   } = useRPS();
 
-  const { loading, error } = useContext(ContractContext);
+  const { loading, error, currentAccount } = useContext(ContractContext);
+
+  if (error) {
+    return <div>{error.message}</div>;
+  }
 
   if (loading) {
     return <div>Please wait...</div>;
   }
 
-  console.log("error", error);
-
-  if (error) {
-    return <div>{error}</div>;
-  }
-
   if (!gameState.firstPlayer) {
     return <GameInitialiser />;
+  }
+
+  if (
+    gameState.firstPlayer &&
+    currentAccount.toUpperCase() !== gameState.firstPlayer.toUpperCase() &&
+    currentAccount.toUpperCase() !== gameState.secondPlayer.toUpperCase()
+  ) {
+    return <div>You are not a member of this game</div>;
   }
 
   const remainingTime =
@@ -39,6 +45,7 @@ function App() {
       <GameBoard
         stake={gameState.stake}
         secondPlayer={gameState.secondPlayer}
+        firstPlayer={gameState.firstPlayer}
         timeRemaining={remainingTime}
         play={play}
         secondPlayerTimeout={secondPlayerTimeout}

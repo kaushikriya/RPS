@@ -33,7 +33,7 @@ export const useRPS = () => {
       });
     } catch (error) {
       setError(error)
-      console.error('Error fetching contract info:', error);
+      // console.error('Error fetching contract info:', error);
     }
   },[RPSContract, setError, signer]);
 
@@ -53,11 +53,12 @@ export const useRPS = () => {
     if(!RPSContract) return;
     try {
       setLoading(true)
-      await RPSContract.connect(signer).play(move, {value});
+      const tx= await RPSContract.connect(signer).play(move, {value});
+      await tx.wait()
       setLoading(false)
     } catch (error) {
       setError(error)
-      console.error('Error calling play function:', error);
+      // console.error('Error calling play function:', error);
     }
   };
 
@@ -65,11 +66,12 @@ export const useRPS = () => {
     if(!RPSContract) return;
     try {
       setLoading(true)
-      await RPSContract.connect(signer).solve(move, salt);
+      const tx = await RPSContract.connect(signer).solve(move, salt);
+      await tx.wait()
       setLoading(false)
     } catch (error) {
       setError(error)
-      console.error('Error calling solve function:', error); 
+      // console.error('Error calling solve function:', error); 
     }
   }; 
 
@@ -77,11 +79,12 @@ export const useRPS = () => {
     if(!RPSContract) return;
     try {
       setLoading(true)
-      await RPSContract.connect(signer).j1Timeout();
+      const tx = await RPSContract.connect(signer).j1Timeout();
+      await tx.wait()
       setLoading(false)
     } catch (error) {
       setError(error)
-      console.error('Error calling firstPlayerTimeout function:', error);
+      // console.error('Error calling firstPlayerTimeout function:', error);
     }
   };
 
@@ -89,11 +92,12 @@ export const useRPS = () => {
     if(!RPSContract) return;
     try {
       setLoading(true)
-      await RPSContract.connect(signer).j2Timeout();
+      const tx = await RPSContract.connect(signer).j2Timeout();
+      await tx.wait()
       setLoading(false)
     } catch (error) {
       setError(error)
-      console.error('Error calling secondPlayerTimeout function:', error);
+      // console.error('Error calling secondPlayerTimeout function:', error);
     }
   };
 
