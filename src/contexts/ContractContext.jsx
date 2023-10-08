@@ -12,6 +12,7 @@ export const ContractProvider = ({ children }) => {
   const [currentAccount, setCurrentAccount] = useState();
   const [signer, setSigner] = useState();
   const [RPSContract, setRPSContract]= useState();
+  const [loading, setLoading] = useState();
 
   const checkIfWalletIsConnected = async () => {
     try {
@@ -33,13 +34,19 @@ export const ContractProvider = ({ children }) => {
   };
 
   const startGame=async(player, move, salt, stake)=>{
-    if(!RPSContract){
-      const contract =new ethers.Contract('0x9b23C3381daB31Ca82B3a517051e6ED6d2B8717d', RPSAbi.abi, signer);
-      // const contract = await RPSFactory(player, move, salt, stake, signer).createContract() 
-      // await contract.waitForDeployment()
-      setRPSContract(contract)
-      console.log(contract.target)
-    }
+    try{
+      if(!RPSContract){
+       setLoading(true)
+        // const contract =new ethers.Contract('0x9b23C3381daB31Ca82B3a517051e6ED6d2B8717d', RPSAbi.abi, signer);
+        const contract = await RPSFactory(player, move, salt, stake, signer).createContract() 
+        await contract.waitForDeployment()
+        setRPSContract(contract)
+        console.log(contract.target)
+       setLoading(false)
+      }
+    }catch(e){
+      console.error(e)
+    }   
   }
 
   useEffect(() => {
@@ -90,7 +97,8 @@ export const ContractProvider = ({ children }) => {
         currentAccount,
         startGame,
         RPSContract,
-        signer
+        signer,
+        loading, setLoading
       }}
     >
       {children}
