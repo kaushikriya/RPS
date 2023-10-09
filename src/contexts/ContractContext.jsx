@@ -3,6 +3,7 @@ import { ethers } from "ethers";
 import { RPSFactory } from "../contracts/RPS";
 import RPSAbi from "../contractsABI/rps.json";
 import Orchestrator from "../contracts/Orchestrator";
+import { useRPS } from "../hooks/useRPS";
 
 export const ContractContext = React.createContext();
 
@@ -11,6 +12,7 @@ const { ethereum } = window;
 export const ContractProvider = ({ children }) => {
   const [currentAccount, setCurrentAccount] = useState();
   const [signer, setSigner] = useState();
+  const [provider, setProvider] = useState();
   const [RPSContract, setRPSContract] = useState();
   const [loading, setLoading] = useState();
   const [error, setError] = useState();
@@ -21,7 +23,8 @@ export const ContractProvider = ({ children }) => {
         return alert("Please install metamask");
       } else {
         const accounts = await ethereum.request({ method: "eth_accounts" });
-        const provider = new ethers.BrowserProvider(ethereum);
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        setProvider(provider);
         if (accounts.length > 0) {
           setCurrentAccount(accounts[0]);
           setSigner(await provider.getSigner());
@@ -47,9 +50,10 @@ export const ContractProvider = ({ children }) => {
           stake,
           signer
         ).createContract();
-        await contract.waitForDeployment();
+        await contract.deployed();
+        console.log(contract);
         setRPSContract(contract);
-        await Orchestrator(signer).setGameAddress(contract.target);
+        await Orchestrator(signer).setGameAddress(contract.address);
         setLoading(false);
       }
     } catch (e) {
@@ -86,8 +90,7 @@ export const ContractProvider = ({ children }) => {
   useEffect(() => {
     const checkIfGameExists = async () => {
       const gameAddress = await Orchestrator(signer).getGameAddress();
-      console.log(gameAddress);
-      if (gameAddress !== ethers.ZeroAddress) {
+      if (gameAddress !== ethers.constants.AddressZero) {
         const contract = new ethers.Contract(gameAddress, RPSAbi.abi, signer);
         setRPSContract(contract);
       }
@@ -126,6 +129,7 @@ export const ContractProvider = ({ children }) => {
         setLoading,
         error,
         setError,
+        provider,
       }}
     >
       {children}

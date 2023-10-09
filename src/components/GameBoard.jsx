@@ -29,12 +29,14 @@ export const GameBoard = ({
     currentAccount.toUpperCase() === secondPlayer.toUpperCase()
   ) {
     return (
-      <div>
-        <p className="text-lg">Current stake : ${stake.toString()}</p>
-        <Dropdown value={move} onChange={setMove} />
-        <Button disabled={move === 0} onClick={handleMove}>
-          Make move
-        </Button>
+      <div className="flex flex-col justify-center items-center gap-10">
+        <p className="text-lg">Current stake : {stake.toString()} wei</p>
+        <div className="flex gap-5">
+          <Dropdown value={move} onChange={setMove} />
+          <Button disabled={move === 0} onClick={handleMove}>
+            Make move
+          </Button>
+        </div>
       </div>
     );
   }

@@ -2,7 +2,7 @@ import GameInitialiser from "./components/GameInitialiser";
 import { GameBoard } from "./components/GameBoard";
 import GameFinish from "./components/GameFinish";
 import { useRPS } from "./hooks/useRPS";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { ContractContext } from "./contexts/ContractContext";
 import { Spinner } from "./components/Spinner";
 
@@ -22,8 +22,6 @@ function App() {
     parseInt(gameState.lastAction) * 1000 + parseInt(gameState.timeout) * 1000;
 
   let content;
-
-  console.log(gameState.stake);
 
   if (error) {
     content = (
@@ -45,7 +43,9 @@ function App() {
   } else if (loading) {
     content = <Spinner />;
   } else if (parseInt(gameState.stake) === 0) {
-    content = <div>This game is over</div>;
+    content = (
+      <div>This game is over. Please refresh the page to start a new game</div>
+    );
   } else {
     if (!gameState.firstPlayer) {
       content = <GameInitialiser />;
@@ -70,6 +70,7 @@ function App() {
           solve={solve}
           timeRemaining={remainingTime}
           firstPlayerTimeout={firstPlayerTimeout}
+          secondPlayerMove={gameState.secondPlayerMove}
         />
       );
     }

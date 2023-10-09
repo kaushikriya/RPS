@@ -2,7 +2,6 @@ import { ethers } from "ethers";
 import OrchestratorAbi from "../contractsABI/orchestrator.json";
 
 export const Orchestrator = (signer) => {
-  console.log("signer", signer);
   const contract = new ethers.Contract(
     "0x4E396C640BB66C3bc2663929C8222970d6158f3f",
     OrchestratorAbi,

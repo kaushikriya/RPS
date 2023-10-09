@@ -8,6 +8,7 @@ import Timer from "./Timer";
 export const GameFinish = ({
   secondPlayer,
   secondPlayerTimeout,
+  secondPlayerMove,
   solve,
   timeRemaining,
   firstPlayerTimeout,
@@ -44,25 +45,29 @@ export const GameFinish = ({
       {gameFinished ? (
         <p className="text-lg">Game has Finished!</p>
       ) : (
-        <>
+        <div className="flex flex-col justify-center items-center">
           {" "}
-          <Input
-            title="salt"
-            value={salt}
-            placeholder="salt"
-            onChange={(e) => setSalt(e.target.value)}
-          />
-          <Dropdown value={move} onChange={setMove} />
-          <Button disabled={move === 0} onClick={handleSolve}>
-            Solve
-          </Button>
-          <Timer
-            targetTime={timeRemaining}
-            timeout={secondPlayerTimeout}
-            stake={stake}
-            text="If First player fails to response in the time limit, you can also withdraw all the assets"
-          />
-        </>
+          <div className="flex justify-center items-center gap-4">
+            <Input
+              title="salt"
+              value={salt}
+              placeholder="salt"
+              onChange={(e) => setSalt(e.target.value)}
+            />
+            <Dropdown value={move} onChange={setMove} />
+            <Button disabled={move === 0} onClick={handleSolve}>
+              Solve
+            </Button>
+          </div>
+          {!secondPlayerMove && (
+            <Timer
+              targetTime={timeRemaining}
+              timeout={secondPlayerTimeout}
+              stake={stake}
+              text="If First player fails to response in the time limit, you can also withdraw all the assets in"
+            />
+          )}
+        </div>
       )}
     </div>
   );

@@ -46,7 +46,7 @@ export const GameInitialiser = () => {
           }}
         />
         <Button
-          disabled={move === undefined || move === 0 || stake === 0}
+          // disabled={move === undefined || move === 0 || stake === 0}
           onClick={() => startGame(player, move, salt, stake)}
         >
           Start Game
