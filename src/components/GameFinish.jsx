@@ -1,5 +1,7 @@
 import { useContext, useState } from "react";
 import { ContractContext } from "../contexts/ContractContext";
+import Button from "./Button";
+import Input from "./Input";
 import Timer from "./Timer";
 
 export const GameFinish = ({
@@ -38,21 +40,25 @@ export const GameFinish = ({
   return (
     <div>
       {gameFinished ? (
-        <div>Game has Finished!</div>
+        <p className="text-lg">Game has Finished!</p>
       ) : (
         <>
           {" "}
-          <input
+          <Input
             title="salt"
+            value={salt}
             placeholder="salt"
             onChange={(e) => setSalt(e.target.value)}
           />
-          <input
+          <Input
             title="move"
+            value={move}
             placeholder="move"
             onChange={(e) => setMove(e.target.value)}
           />
-          <button onClick={handleSolve}>Solve</button>
+          <Button disabled={move === 0} onClick={handleSolve}>
+            Solve
+          </Button>
         </>
       )}
     </div>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Button from "./Button";
 
 const countdown = (targetTimestamp) => {
   const now = Date.now();
@@ -40,12 +41,14 @@ export const Timer = ({ targetTime, timeout, stake, text }) => {
   }, [targetTime]);
 
   if (time === "") {
-    return <button onClick={timeout}>Withdraw assets</button>;
+    return <Button onClick={timeout}>Withdraw assets</Button>;
   }
 
   if (stake === 0) {
     return (
-      <div>Game has been settled, you have received the total stake amount</div>
+      <p className="text-lg">
+        Game has been settled, you have received the total stake amount
+      </p>
     );
   }
 

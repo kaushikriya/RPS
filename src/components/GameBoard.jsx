@@ -1,6 +1,8 @@
 import { useContext, useState } from "react";
 import { ContractContext } from "../contexts/ContractContext";
 import Timer from "../components/Timer";
+import Dropdown from "./Dropdown";
+import Button from "./Button";
 
 export const GameBoard = ({
   stake,
@@ -28,13 +30,11 @@ export const GameBoard = ({
   ) {
     return (
       <div>
-        <p>Current stake : ${stake.toString()}</p>
-        <input
-          id="move"
-          placeholder="move"
-          onChange={(e) => setMove(e.target.value)}
-        />
-        <button onClick={handleMove}>Make move</button>
+        <p className="text-lg">Current stake : ${stake.toString()}</p>
+        <Dropdown value={move} onChange={setMove} />
+        <Button disabled={move === 0} onClick={handleMove}>
+          Make move
+        </Button>
       </div>
     );
   }

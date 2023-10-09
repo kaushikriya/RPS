@@ -1,9 +1,13 @@
+import { ethers } from 'ethers';
 import { useCallback } from 'react';
 import { useContext, useEffect, useState } from 'react';
 import { ContractContext } from '../contexts/ContractContext';
+import Orchestrator from '../contracts/Orchestrator';
 
 export const useRPS = () => {
   const {RPSContract, signer, setLoading, setError} = useContext(ContractContext)
+
+  console.log(RPSContract)
 
   const [gameState, setGameState] = useState({
     stake: undefined,
@@ -12,7 +16,7 @@ export const useRPS = () => {
     firstPlayer: undefined,
     secondPlayer: undefined,
     lastAction: undefined
-  });
+  });   
 
   const getContractInfo = useCallback( async () => {
     try {
@@ -22,7 +26,7 @@ export const useRPS = () => {
       const firstPlayer = await RPSContract.connect(signer).j1();
       const secondPlayer = await RPSContract.connect(signer).j2();
       const lastAction = await RPSContract.connect(signer).lastAction();
-
+      
       setGameState({
         stake,
         secondPlayerMove,
@@ -33,7 +37,7 @@ export const useRPS = () => {
       });
     } catch (error) {
       setError(error)
-      // console.error('Error fetching contract info:', error);
+      console.error('Error fetching contract info:', error);
     }
   },[RPSContract, setError, signer]);
 
@@ -58,7 +62,7 @@ export const useRPS = () => {
       setLoading(false)
     } catch (error) {
       setError(error)
-      // console.error('Error calling play function:', error);
+      console.error('Error calling play function:', error);
     }
   };
 
@@ -68,10 +72,11 @@ export const useRPS = () => {
       setLoading(true)
       const tx = await RPSContract.connect(signer).solve(move, salt);
       await tx.wait()
+      await Orchestrator(signer).setGameAddress(ethers.ZeroAddress)
       setLoading(false)
     } catch (error) {
       setError(error)
-      // console.error('Error calling solve function:', error); 
+      console.error('Error calling solve function:', error); 
     }
   }; 
 
@@ -81,10 +86,11 @@ export const useRPS = () => {
       setLoading(true)
       const tx = await RPSContract.connect(signer).j1Timeout();
       await tx.wait()
+      await Orchestrator(signer).setGameAddress(ethers.ZeroAddress)
       setLoading(false)
     } catch (error) {
       setError(error)
-      // console.error('Error calling firstPlayerTimeout function:', error);
+      console.error('Error calling firstPlayerTimeout function:', error);
     }
   };
 
@@ -94,10 +100,11 @@ export const useRPS = () => {
       setLoading(true)
       const tx = await RPSContract.connect(signer).j2Timeout();
       await tx.wait()
+      await Orchestrator(signer).setGameAddress(ethers.ZeroAddress)
       setLoading(false)
     } catch (error) {
       setError(error)
-      // console.error('Error calling secondPlayerTimeout function:', error);
+      console.error('Error calling secondPlayerTimeout function:', error);
     }
   };
 

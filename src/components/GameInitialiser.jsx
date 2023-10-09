@@ -1,51 +1,54 @@
 import { useContext, useState } from "react";
 import { ContractContext } from "../contexts/ContractContext";
+import Button from "./Button";
+import Input from "./Input";
+import Dropdown from "./Dropdown";
 
 export const GameInitialiser = () => {
   const { currentAccount, connectWallet, startGame } =
     useContext(ContractContext);
-  const [stake, setStake] = useState(0);
-  const [salt, setSalt] = useState(0);
-  const [move, setMove] = useState(0);
+  const [stake, setStake] = useState();
+  const [salt, setSalt] = useState();
+  const [move, setMove] = useState();
   const [player, setPlayer] = useState();
 
   if (!currentAccount) {
-    return <button onClick={connectWallet}>Connect</button>;
+    return <Button onClick={connectWallet}>Connect</Button>;
   }
 
   return (
-    <div>
-      <input
+    <div className="w-full h-full flex flex-col md:flex-row justify-center items-center gap-8 focus:none p-8">
+      <Input
         id="stake"
-        placeholder="stake"
+        placeholder="Stake"
+        value={stake}
         onChange={(event) => {
           setStake(event.target.value);
         }}
       />
-      <input
+      <Input
         id="salt"
-        placeholder="salt"
+        placeholder="Salt"
+        value={salt}
         onChange={(event) => {
           setSalt(event.target.value);
         }}
       />
-      <input
-        id="move"
-        placeholder="move"
-        onChange={(event) => {
-          setMove(event.target.value);
-        }}
-      />
-      <input
+      <Dropdown value={move} onChange={setMove} />
+      <Input
         id="player"
-        placeholder="player"
+        placeholder="Player"
+        value={player}
         onChange={(event) => {
           setPlayer(event.target.value);
         }}
       />
-      <button onClick={() => startGame(player, move, salt, stake)}>
+      <Button
+        disabled={move === undefined || move === 0}
+        onClick={() => startGame(player, move, salt, stake)}
+      >
         Start Game
-      </button>
+      </Button>
     </div>
   );
 };

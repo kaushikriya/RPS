@@ -9,7 +9,7 @@ export const Hasher = (signer) => {
   );
 
   const getHash = async (move, salt) => {
-    return await contract.hash(move, salt);
+    return await contract.connect(signer).hash(move, salt);
   };
 
   return { getHash };

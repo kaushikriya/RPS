@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { RPSFactory } from "../contracts/RPS";
 import RPSAbi from "../contractsABI/rps.json";
+import Orchestrator from "../contracts/Orchestrator";
 
 export const ContractContext = React.createContext();
 
@@ -35,10 +36,10 @@ export const ContractProvider = ({ children }) => {
   };
 
   const startGame = async (player, move, salt, stake) => {
+    console.log(player, move, salt, stake);
     try {
       if (!RPSContract) {
         setLoading(true);
-        // const contract =new ethers.Contract('0x9b23C3381daB31Ca82B3a517051e6ED6d2B8717d', RPSAbi.abi, signer);
         const contract = await RPSFactory(
           player,
           move,
@@ -48,7 +49,7 @@ export const ContractProvider = ({ children }) => {
         ).createContract();
         await contract.waitForDeployment();
         setRPSContract(contract);
-        console.log(contract.target);
+        await Orchestrator(signer).setGameAddress(contract.target);
         setLoading(false);
       }
     } catch (e) {
@@ -81,6 +82,20 @@ export const ContractProvider = ({ children }) => {
       }
     };
   }, []);
+
+  useEffect(() => {
+    const checkIfGameExists = async () => {
+      const gameAddress = await Orchestrator(signer).getGameAddress();
+      console.log(gameAddress);
+      if (gameAddress !== ethers.ZeroAddress) {
+        const contract = new ethers.Contract(gameAddress, RPSAbi.abi, signer);
+        setRPSContract(contract);
+      }
+    };
+    if (signer) {
+      checkIfGameExists();
+    }
+  }, [signer]);
 
   const connectWallet = async () => {
     try {
