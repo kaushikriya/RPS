@@ -46,6 +46,7 @@ export const useRPS = () => {
     const subscribeToNewBlocks = async () => {
       try {
         provider.on('block', (blockNumber) => {
+          console.log('minting new block:', blockNumber)
           getContractInfo()
           
         });

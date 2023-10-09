@@ -16,12 +16,22 @@ function App() {
     secondPlayerTimeout,
   } = useRPS();
 
-  const { loading, error, currentAccount } = useContext(ContractContext);
+  const { loading, error, currentAccount, RPSContract } =
+    useContext(ContractContext);
 
   const remainingTime =
     parseInt(gameState.lastAction) * 1000 + parseInt(gameState.timeout) * 1000;
 
   let content;
+
+  // useEffect(() => {
+  //   const initiateGame = async () => {
+  //     await getContractInfo();
+  //   };
+
+  //   initiateGame();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   if (error) {
     content = (
@@ -46,8 +56,11 @@ function App() {
     content = (
       <div>This game is over. Please refresh the page to start a new game</div>
     );
+  } else if (RPSContract && !gameState.firstPlayer) {
+    console.log(gameState.firstPlayer, RPSContract);
+    content = <Spinner />;
   } else {
-    if (!gameState.firstPlayer) {
+    if (!gameState.firstPlayer && !RPSContract) {
       content = <GameInitialiser />;
     } else if (!gameState.secondPlayerMove && gameState.secondPlayer) {
       content = (
