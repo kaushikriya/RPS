@@ -9,7 +9,7 @@ export const GameInitialiser = () => {
     useContext(ContractContext);
   const [stake, setStake] = useState();
   const [salt, setSalt] = useState();
-  const [move, setMove] = useState();
+  const [move, setMove] = useState(1);
   const [player, setPlayer] = useState();
 
   if (!currentAccount) {

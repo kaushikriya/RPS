@@ -14,7 +14,7 @@ export const GameBoard = ({
 }) => {
   const { currentAccount } = useContext(ContractContext);
 
-  const [move, setMove] = useState(0);
+  const [move, setMove] = useState(1);
 
   const handleMove = async () => {
     try {

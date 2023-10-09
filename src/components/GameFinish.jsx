@@ -14,7 +14,7 @@ export const GameFinish = ({
   stake,
 }) => {
   const [salt, setSalt] = useState();
-  const [move, setMove] = useState();
+  const [move, setMove] = useState(1);
   const [gameFinished, setGameFinished] = useState(false);
 
   const { currentAccount } = useContext(ContractContext);
