@@ -1,11 +1,13 @@
 import { useContext, useState } from "react";
 import { ContractContext } from "../contexts/ContractContext";
 import Button from "./Button";
+import Dropdown from "./Dropdown";
 import Input from "./Input";
 import Timer from "./Timer";
 
 export const GameFinish = ({
   secondPlayer,
+  secondPlayerTimeout,
   solve,
   timeRemaining,
   firstPlayerTimeout,
@@ -50,15 +52,16 @@ export const GameFinish = ({
             placeholder="salt"
             onChange={(e) => setSalt(e.target.value)}
           />
-          <Input
-            title="move"
-            value={move}
-            placeholder="move"
-            onChange={(e) => setMove(e.target.value)}
-          />
+          <Dropdown value={move} onChange={setMove} />
           <Button disabled={move === 0} onClick={handleSolve}>
             Solve
           </Button>
+          <Timer
+            targetTime={timeRemaining}
+            timeout={secondPlayerTimeout}
+            stake={stake}
+            text="If First player fails to response in the time limit, you can also withdraw all the assets"
+          />
         </>
       )}
     </div>

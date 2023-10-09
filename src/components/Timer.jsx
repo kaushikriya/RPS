@@ -41,7 +41,14 @@ export const Timer = ({ targetTime, timeout, stake, text }) => {
   }, [targetTime]);
 
   if (time === "") {
-    return <Button onClick={timeout}>Withdraw assets</Button>;
+    return (
+      <div className="grid gap-10">
+        <p className="text-lg">
+          The other player failed to respond in the given time limit
+        </p>
+        <Button onClick={timeout}>Withdraw assets</Button>
+      </div>
+    );
   }
 
   if (stake === 0) {

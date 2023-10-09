@@ -55,6 +55,7 @@ function App() {
       content = (
         <GameFinish
           secondPlayer={gameState.secondPlayer}
+          firstPlayer={gameState.firstPlayer}
           solve={solve}
           timeRemaining={remainingTime}
           firstPlayerTimeout={firstPlayerTimeout}
