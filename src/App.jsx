@@ -23,6 +23,8 @@ function App() {
 
   let content;
 
+  console.log(gameState.stake);
+
   if (error) {
     content = (
       <div className="flex-col flex overflow-hidden justify-center items-center">
@@ -42,6 +44,8 @@ function App() {
     );
   } else if (loading) {
     content = <Spinner />;
+  } else if (parseInt(gameState.stake) === 0) {
+    content = <div>This game is over</div>;
   } else {
     if (!gameState.firstPlayer) {
       content = <GameInitialiser />;

@@ -7,8 +7,6 @@ import Orchestrator from '../contracts/Orchestrator';
 export const useRPS = () => {
   const {RPSContract, signer, setLoading, setError} = useContext(ContractContext)
 
-  console.log('signer', signer)
-
   const [gameState, setGameState] = useState({
     stake: undefined,
     secondPlayerMove: undefined,
