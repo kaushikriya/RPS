@@ -38,7 +38,7 @@ export const ContractProvider = ({ children }) => {
   const startGame = async (player, move, salt, stake) => {
     console.log(player, move, salt, stake);
     try {
-      if (!RPSContract) {
+      if (!RPSContract && signer) {
         setLoading(true);
         const contract = await RPSFactory(
           player,

@@ -24,7 +24,14 @@ function App() {
   let content;
 
   if (error) {
-    content = <p className="text-lg text-red-800">{error.message}</p>;
+    content = (
+      <div className="flex-col flex overflow-hidden justify-center items-center">
+        <p className="text-lg">There was an error</p>
+        <p className="w-[80%] text-lg p-10 text-red-800 whitespace-normal overflow-hidden">
+          {error.message}
+        </p>
+      </div>
+    );
   } else if (
     gameState.firstPlayer &&
     currentAccount.toUpperCase() !== gameState.firstPlayer.toUpperCase() &&
