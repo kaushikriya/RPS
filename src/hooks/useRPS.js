@@ -7,7 +7,7 @@ import Orchestrator from '../contracts/Orchestrator';
 export const useRPS = () => {
   const {RPSContract, signer, setLoading, setError} = useContext(ContractContext)
 
-  console.log(RPSContract)
+  console.log('signer', signer)
 
   const [gameState, setGameState] = useState({
     stake: undefined,
@@ -54,7 +54,9 @@ export const useRPS = () => {
   }, [RPSContract, getContractInfo]);
 
   const play = async (move, value) => {
-    if(!RPSContract) return;
+    if(!RPSContract || !signer){
+      throw new Error('No signer available')
+    };
     try {
       setLoading(true)
       const tx= await RPSContract.connect(signer).play(move, {value});
@@ -67,7 +69,9 @@ export const useRPS = () => {
   };
 
   const solve = async (move, salt) => {
-    if(!RPSContract) return;
+    if(!RPSContract || !signer){
+      throw new Error('No signer available')
+    };
     try {
       setLoading(true)
       const tx = await RPSContract.connect(signer).solve(move, salt);
@@ -81,7 +85,9 @@ export const useRPS = () => {
   }; 
 
   const firstPlayerTimeout = async () => {
-    if(!RPSContract) return;
+    if(!RPSContract || !signer){
+      throw new Error('No signer available')
+    };
     try {
       setLoading(true)
       const tx = await RPSContract.connect(signer).j1Timeout();
@@ -95,7 +101,9 @@ export const useRPS = () => {
   };
 
   const secondPlayerTimeout = async () => {
-    if(!RPSContract) return;
+    if(!RPSContract || !signer){
+      throw new Error('No signer available')
+    };
     try {
       setLoading(true)
       const tx = await RPSContract.connect(signer).j2Timeout();
