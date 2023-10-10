@@ -26,7 +26,6 @@ function App() {
 
   useEffect(() => {
     const initialLoad = async () => {
-      console.log("initial fetch");
       await getContractInfo();
     };
     initialLoad();
