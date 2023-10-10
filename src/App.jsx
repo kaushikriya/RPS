@@ -30,7 +30,7 @@ function App() {
       await getContractInfo();
     };
     initialLoad();
-  }, [RPSContract]);
+  }, [RPSContract, currentAccount]);
 
   if (error) {
     content = (
