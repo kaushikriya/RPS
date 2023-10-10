@@ -89,11 +89,13 @@ export const ContractProvider = ({ children }) => {
 
   useEffect(() => {
     const checkIfGameExists = async () => {
+      setLoading(true);
       const gameAddress = await Orchestrator(signer).getGameAddress();
       if (gameAddress !== ethers.constants.AddressZero) {
         const contract = new ethers.Contract(gameAddress, RPSAbi.abi, signer);
         setRPSContract(contract);
       }
+      setLoading(false);
     };
     if (signer) {
       checkIfGameExists();

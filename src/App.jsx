@@ -24,14 +24,13 @@ function App() {
 
   let content;
 
-  // useEffect(() => {
-  //   const initiateGame = async () => {
-  //     await getContractInfo();
-  //   };
-
-  //   initiateGame();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
+  useEffect(() => {
+    const initialLoad = async () => {
+      console.log("initial fetch");
+      await getContractInfo();
+    };
+    initialLoad();
+  }, [RPSContract]);
 
   if (error) {
     content = (
@@ -50,15 +49,12 @@ function App() {
     content = (
       <p className="text-lg text-red-800">You are not a member of this game</p>
     );
-  } else if (loading) {
+  } else if (loading || (RPSContract && !gameState.firstPlayer)) {
     content = <Spinner />;
   } else if (parseInt(gameState.stake) === 0) {
     content = (
       <div>This game is over. Please refresh the page to start a new game</div>
     );
-  } else if (RPSContract && !gameState.firstPlayer) {
-    console.log(gameState.firstPlayer, RPSContract);
-    content = <Spinner />;
   } else {
     if (!gameState.firstPlayer && !RPSContract) {
       content = <GameInitialiser />;

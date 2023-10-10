@@ -16,11 +16,9 @@ export const GameFinish = ({
 }) => {
   const [salt, setSalt] = useState();
   const [move, setMove] = useState(1);
-  const [gameFinished, setGameFinished] = useState(false);
-
   const { currentAccount } = useContext(ContractContext);
 
-  if (currentAccount.toUpperCase() === secondPlayer.toUpperCase()) {
+  if (currentAccount?.toUpperCase() === secondPlayer?.toUpperCase()) {
     return (
       <Timer
         targetTime={timeRemaining}
@@ -34,7 +32,6 @@ export const GameFinish = ({
   const handleSolve = async () => {
     try {
       await solve(move, salt);
-      setGameFinished(true);
     } catch (e) {
       console.log(e);
     }
@@ -42,11 +39,8 @@ export const GameFinish = ({
 
   return (
     <div>
-      {gameFinished ? (
-        <p className="text-lg">Game has Finished!</p>
-      ) : (
-        <div className="flex flex-col justify-center items-center">
-          {" "}
+      <div className="flex flex-col justify-center items-center">
+        {secondPlayerMove ? (
           <div className="flex justify-center items-center gap-4">
             <Input
               title="salt"
@@ -59,16 +53,15 @@ export const GameFinish = ({
               Solve
             </Button>
           </div>
-          {!secondPlayerMove && (
-            <Timer
-              targetTime={timeRemaining}
-              timeout={secondPlayerTimeout}
-              stake={stake}
-              text="If First player fails to response in the time limit, you can also withdraw all the assets in"
-            />
-          )}
-        </div>
-      )}
+        ) : (
+          <Timer
+            targetTime={timeRemaining}
+            timeout={secondPlayerTimeout}
+            stake={stake}
+            text="If Second player fails to response in the time limit, you can also withdraw all the assets in"
+          />
+        )}
+      </div>
     </div>
   );
 };
