@@ -3,7 +3,6 @@ import { ethers } from "ethers";
 import { RPSFactory } from "../contracts/RPS";
 import RPSAbi from "../contractsABI/rps.json";
 import Orchestrator from "../contracts/Orchestrator";
-import { useRPS } from "../hooks/useRPS";
 
 export const ContractContext = React.createContext();
 
